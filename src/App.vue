@@ -4,11 +4,11 @@ export default Vue.extend({
   mpType: "app",
   onLaunch() {
     // console.log('App Launch')
-    if (uni.getStorageSync("my_token")) {
-      uni.reLaunch({
-        url: "/pages/home/index"
-      });
-    }
+    // if (uni.getStorageSync("my_token")) {
+    //   uni.reLaunch({
+    //     url: "/pages/home/index"
+    //   });
+    // }
   },
   onShow() {
     console.log("App Show");

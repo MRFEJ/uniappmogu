@@ -100,6 +100,7 @@ export default Vue.extend({
         }
       });
       // console.log(res);
+      this.vcode=`${res.data.vcode}`
       uni.showToast({
         title: "验证码为:" + res.data.vcode, //提示的内容,
         icon: "none", //图标,

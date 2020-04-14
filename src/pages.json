@@ -25,8 +25,26 @@
 			"path": "pages/study/index"
 		},
 		{
-			"path": "pages/my/index"
+			"path": "pages/my/index",
+			"style": {
+				"navigationBarTitleText": "我的",
+				"navigationBarBackgroundColor":"#ff8d43",
+				"navigationBarTextStyle":"white"
+			}
+		},
+		{
+			"path": "pages/course_details/index"
+		},
+		{
+			"path": "pages/starStudy/index"
+		},
+		{
+			"path": "pages/play/index",
+			"style": {
+				"navigationBarTitleText": "支付页面"
+			}
 		}
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

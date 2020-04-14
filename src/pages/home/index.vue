@@ -1,7 +1,7 @@
 <template>
   <view class="home-container">
     <!-- 子组件搜索框 -->
-    <search :placeholder="text" />
+    <search placeholder="请输入要搜索的内容" />
 
     <!-- 轮播图 -->
     <view>
@@ -14,7 +14,7 @@
         :duration="1000"
       >
         <swiper-item v-for="(item, index) in lunbo" :key="index">
-          <image :src="item.img_url" mode="" />
+             <image @click="golunbo(item.course_id)" :src="item.img_url" mode="" />
         </swiper-item>
       </swiper>
     </view>
@@ -28,9 +28,9 @@
 
     <view>
 <scroll-view class="course-container" scroll-x="true">
-<view class="course-item" v-for="(item, index) in tuijian" :key="index">
+  <navigator :url="'../course_details/index?id='+item.relation_id" class="course-item" v-for="(item, index) in tuijian" :key="index">
   <image :src="item.icon"></image>
-</view>
+  </navigator>
 </scroll-view>
     </view>
     </view>
@@ -40,12 +40,13 @@
     <view>
     <view class="tips">
       <text>热门课程</text>
-      <image src="../../static/images/arrow@2x.png"></image>
+      <navigator url="../course_details/index?id=3">
+        <image src="../../static/images/arrow@2x.png"></image>
+      </navigator>
     </view>
-
     <view class="hot-video">
       <view class="video-item" v-for="(item, index) in hotVideo" :key="index">
-        <image :src="item.cover_photo_url" mode="" />
+        <image @click="goHotVideo(item.course_id)" :src="item.cover_photo_url" mode="" />
         <view class="title">{{item.name}}</view>
         <view class="subtitle">{{item.view_count}}}人已观看</view>
       </view>
@@ -70,7 +71,6 @@ search
       lunbo: [],
       tuijian: [],
       hotVideo: [],
-      text:"请输入要搜索的内容"
     };
   },
   async onLoad() {
@@ -93,8 +93,17 @@ search
   },
   methods:{
     goCourse(){
-      uni.switchTab({url:"pages/course/index"})
-      console.log(11)
+      uni.switchTab({url:"../course/index"})
+      // console.log(11)
+    },
+    // 轮播图跳转
+    golunbo(id){
+      // console.log(11)
+      uni.navigateTo({url:"../course_details/index?id="+id})
+    },
+    // 热门课程跳转
+    goHotVideo(id){
+      uni.navigateTo({url:"../course_details/index?id="+id})
     }
   }
 });

@@ -34,7 +34,7 @@ export default Vue.extend({
             nickname,
             avatar
           }})
-          console.log(res)
+          // console.log(res)
           const {status,message,token}=res.data
           // 请求成功
 
