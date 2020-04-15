@@ -32,6 +32,7 @@ export default {
         changeNum(item){
             if(this.isok){
                 this.num=item
+                this.$emit('math',item)
             }
             console.log(item)
         }

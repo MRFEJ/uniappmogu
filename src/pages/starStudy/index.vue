@@ -15,7 +15,7 @@
         </view>
       </view>
       <view class="comment">
-        <image src="../../static/images/evaluate@2x.png" mode />
+        <image @click="evaluate" src="../../static/images/evaluate@2x.png" mode />
       </view>
     </view>
 
@@ -32,31 +32,51 @@
         </view>
       </view>
     </view>
+
+    <evaluate :ishow="ishow" @close="close" @postComment="sbumi">
+      <view class="comment-content">
+        <textarea v-model="value" placeholder="请输入评论内容哦~"></textarea>
+        <label>
+          评分 :
+          <star :isok="true" @math="math"></star>
+        </label>
+      </view>
+    </evaluate>
   </view>
 </template>
 
 <script>
 import query from "../../utils/query";
+import evaluate from "../../components/evaluate";
+import star from "../../components/star";
 export default {
+  components: {
+    evaluate,
+    star
+  },
   data() {
     return {
       videoUrl: null,
       id: null,
-      isok: true,
+      ishow: false,
       // 课程信息
       course: null,
       // 视频列表
       videos: [],
-      num: 0
+      num: 0,
+      value: "",
+      // 星星数
+      xinxin: 5
     };
   },
   async onLoad(e) {
     // console.log(e);
     this.id = e.id;
-    let res = await query({ url: `course/play/${e.id}` });
+        let res = await query({ url: `course/play/${this.id}` });
     // console.log(res);
     this.course = res.data.message.course;
     this.videos = res.data.message.videos;
+
   },
   methods: {
     // 点击切换视频
@@ -123,6 +143,67 @@ export default {
           resolve(false);
         }
       });
+    },
+    // 点击评价
+    async evaluate() {
+      let res = await query({
+        url: "study/complete",
+        data: { course_id: this.id }
+      });
+      // console.log(res);
+      if (res.data.complete) {
+        this.ishow = true;
+      } else {
+        uni.showToast({
+          title: "请先看完视频哦!",
+          duration: 2000,
+          icon: "none"
+        });
+        this.ishow = false;
+      }
+    },
+    // 关闭评价
+    close() {
+      this.ishow = false;
+    },
+    // 获取评价星星数
+    math(val) {
+      this.xinxin = val;
+    },
+    // 提交评价
+    async sbumi() {
+      // console.log(this.xinxin, this.value);
+      if (!this.value.trim()) {
+        uni.showToast({
+          title: "内容不能为空!",
+          duration: 1000,
+          icon:"none"
+        });
+        return;
+      }
+      let res = await query({
+        url: "comment/create",
+        method: "POST",
+        data: {
+          course_id: this.id,
+          content: this.value,
+          score: this.xinxin
+        }
+      });
+      // console.log(res);
+      if (res.data.status === 0) {
+        uni.showToast({
+          title: res.data.message,
+          duration: 1000
+        });
+        this.ishow = false;
+        this.value = "";
+      } else {
+        uni.showToast({
+          title: res.data.message,
+          duration: 1000
+        });
+      }
     }
   }
 };

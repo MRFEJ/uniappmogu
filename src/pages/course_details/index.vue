@@ -132,6 +132,7 @@ export default {
   },
   data() {
     return {
+      id:null,
       details: null,
       isok: true,
       muen: ["目录", "讲师介绍", "评价"],
@@ -143,9 +144,12 @@ export default {
       comments: []
     };
   },
-  async onLoad(option) {
+  onLoad(option) {
     // console.log(option)
-    let res = await query({ url: `course/${option.id}` });
+    this.id=option.id
+  },
+  async onShow(){
+    let res = await query({ url: `course/${this.id}` });
     // console.log(res);
     this.details = res.data.message.course;
     this.muen[2] = `评价(${res.data.message.commentTotal})`;
@@ -486,6 +490,9 @@ export default {
             margin-top: 16rpx;
             color: #a8a8a8;
             font-size: 12px;
+            width: 460rpx;
+            white-space:normal;
+            word-break:break-all
           }
         }
         .time {
